@@ -64,7 +64,7 @@
 
 ;Question 2a;
 #|
- 
+ took me 2 days
 |#
 (: nested-list-depth : (Listof Any) -> Number)
 (define (nested-list-depth lst)
@@ -93,5 +93,42 @@
 
 ;Question 2b;
 #|
- 
+ the difficulty is to apply the the function on each of the sublist,
+ second we need to check the max and min value of each sublist.
+it took me almost 5 hours
 |#
+; this function get a list any type and give you the max element
+(: get_max : (Listof Any) -> Number)
+(define (get_max x)
+  (define (nulling_nonNumbers a)
+    (cond
+      [(number? a) a]
+      [else null]
+      ))
+  (apply max (filter (lambda (e) (number? e)) (map nulling_nonNumbers x)))
+)
+; this function get a list any type and give you the max element
+
+(: get_min : (Listof Any) -> Number)
+(define (get_min x)
+  (define (nulling_nonNumbers a)
+    (cond
+      [(number? a) a]
+      [else null]
+      ))
+  (apply min (filter (lambda (e) (number? e)) (map nulling_nonNumbers x)))
+)
+
+(: min&max-lists : (Listof Any) -> (Listof Any))
+(define (min&max-lists lst)
+  (: min_max_list : (Listof Any) -> (Listof Any))
+  (define (min_max_list l)
+    (list (get_min l) (get_max l))
+    )
+  (map min_max_list lst)
+  )
+
+; Tests
+
+(test (min&max-lists '((any "Benny" 10 OP 8) (any "Benny" OP (2 3)))) => '((8 10) ()))
+(test (min&max-lists '((2 5 1 5 L) (4 5 6 7 3 2 1) ())) => '((1 5) (1 7) ()))
