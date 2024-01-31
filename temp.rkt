@@ -34,3 +34,28 @@
 ;(apply max '(10 8))
 
 ;(test (min&max-lists '((any "Benny" 10 OP 8) (any "Benny" OP (2 3)))) => '((8 10) ()))
+
+
+
+(map (lambda (x) 88) '((1 2) (3 4)))
+
+
+
+
+(: min&max-lists : (Listof Any) -> (Listof Any))
+(define (min&max-lists lst)
+  (: min_max_list : (Listof Any) -> (Listof Any))
+  (define (min_max_list l)
+    (cond
+      [(null? l) l]
+      [else  (list (get_min l) (get_max l))])
+    ) 
+  (cond
+    [(list? lst) (map min_max_list lst)]
+    [else (map min_max_list (listof lst))])
+  )
+
+; Tests
+
+(test (min&max-lists '((any "Benny" 10 OP 8) (any "Benny" OP (2 3)))) => '((8 10) ()))
+(test (min&max-lists '(any "Benny" 10 OP 8)) => '((8 10)))

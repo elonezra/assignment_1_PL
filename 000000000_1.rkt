@@ -121,14 +121,53 @@ it took me almost 5 hours
 
 (: min&max-lists : (Listof Any) -> (Listof Any))
 (define (min&max-lists lst)
-  (: min_max_list : (Listof Any) -> (Listof Any))
-  (define (min_max_list l)
-    (list (get_min l) (get_max l))
+  (: min_max_list : (Listof Any) (Listof Any) -> (Listof Any))
+  (define (min_max_list l nl)
+    (cond
+      [(null? l) nl]
+      [else  (min_max_list  (list (get_min l) (get_max l)))])
     )
-  (map min_max_list lst)
+  (min_max_list lst)
   )
 
 ; Tests
 
 (test (min&max-lists '((any "Benny" 10 OP 8) (any "Benny" OP (2 3)))) => '((8 10) ()))
 (test (min&max-lists '((2 5 1 5 L) (4 5 6 7 3 2 1) ())) => '((1 5) (1 7) ()))
+
+
+
+;Question 3;
+#|
+   
+|#
+
+(define-type TaggedQueue
+  [EmptyTQ]
+  [Enqueue Symbol Any TaggedQueue])
+
+
+(: search-queue : Symbol TaggedQueue -> Any)
+(define (search-queue ID TQ)
+  (cases TQ
+    [(EmptyTQ) #f]
+    [(Enqueue i val T)
+     (cond
+       [(eq? i ID) val]
+       [else (search-queue ID T)])])
+  )
+
+( : dequeue-queue : TaggedQueue -> Any)
+(define (dequeue-queue TQ)
+  (cases TQ
+    [(EmptyTQ) #f]
+    [(Enqueue i val Q) Q])
+  )
+
+(test (EmptyTQ) => (EmptyTQ))
+(test (Enqueue 'x 42 (EmptyTQ)) => (Enqueue 'x 42 (EmptyTQ)))
+(test (search-queue 'x (Enqueue 'x 42 (EmptyTQ))) => 42)
+(test (search-queue 'x (EmptyTQ)) => #f)
+(test (search-queue 'x (Enqueue 'y 42 (Enqueue 'x 12 (EmptyTQ)))) => 12)
+(test (dequeue-queue (Enqueue 'x 42 (EmptyTQ))) => (EmptyTQ))
+(test (dequeue-queue (EmptyTQ)) => #f)
